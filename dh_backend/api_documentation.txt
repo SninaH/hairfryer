@@ -1,0 +1,102 @@
+
+
+POST /api/v1/upload-youtube
+request:
+{
+  "youtube_url": "https://www.youtube.com/watch?v=abc123"
+}
+response
+{
+  "session_id": "xyz789",
+  "preview_image_url": "https://yourserver.com/images/xyz789.png"
+}
+
+POST /api/v1/submit-coordinates
+request:
+{
+  "session_id": "xyz789",
+  "coordinates": {
+    "throw_order": [120, 200, 453, 544],      #zaporedni met
+    "pins_fallen_in_throw": [120, 200, 453, 544],      # podrti keglji v metu
+    "pins_fallen_on_lane": [120, 200, 453, 544],        # podrti keglji na stezi
+    "pins": {
+        "pin_1": [120, 200, 453, 544],
+        "pin_2": [120, 200, 453, 544],
+        "pin_3": [120, 200, 453, 544],
+        "pin_4": [120, 200, 453, 544],
+        "pin_5": [120, 200, 453, 544],
+        "pin_6": [120, 200, 453, 544],
+        "pin_7": [120, 200, 453, 544],
+        "pin_8": [120, 200, 453, 544],
+        "pin_9": [120, 200, 453, 544],
+    }
+  }
+}
+response:
+{
+  "status": "coordinates_received",
+  "message": "Coordinates successfully received, processing will continue."
+}
+
+
+GET /api/v1/status/{session_id}
+response ČE ŠE NI:
+{
+  "status": "processing"
+}
+response ČE ŽE JE:
+{
+  "status": "done",
+  "results": {
+    "total_throws": 10,
+    "total_pins_fallen": 85,
+    "throws":[
+        {
+          pins_fallen: 5,               # št podrtih kegljev
+          pins_hit: [1, 2, 3, 4, 5],        # številjke kegljev ki so bili podrti
+        },
+        {
+          pins_fallen: 3,
+          pins_hit: [1, 2, 3],
+        },
+        {
+          pins_fallen: 4,
+          pins_hit: [1, 2, 3, 4],
+        },
+    ]
+  }
+}
+
+
+error response:
+{
+  "status": "error",
+  "message": "Error message here"
+}
+
+
+
+
+
+
+example request:
+{
+  "session_id": "7ce28d4e-88d1-4667-a58e-c87678299012",
+  "coordinates": {
+    "throw_order": [100, 150, 200, 250],
+    "pins_fallen_in_throw": [300, 400, 350, 450],
+    "pins_fallen_on_lane": [500, 600, 550, 650],
+    "pins": {
+      "pin_1": [50, 100, 100, 150],
+      "pin_2": [120, 100, 170, 150],
+      "pin_3": [190, 100, 240, 150],
+      "pin_4": [80, 170, 130, 220],
+      "pin_5": [150, 170, 200, 220],
+      "pin_6": [220, 170, 270, 220],
+      "pin_7": [110, 240, 160, 290],
+      "pin_8": [180, 240, 230, 290],
+      "pin_9": [150, 310, 200, 360]
+    }
+  }
+}
+
