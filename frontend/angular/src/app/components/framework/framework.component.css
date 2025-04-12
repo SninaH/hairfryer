@@ -1,0 +1,20 @@
+/* Ensure the body and html take up the full height */
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Make the container fill the remaining space */
+.container-md {
+    min-height: calc(100vh - 160px);
+    /* Adjust 100px to the height of your header + footer */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Footer stays at the bottom */
+footer {
+    margin-top: auto;
+}
+

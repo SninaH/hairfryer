@@ -1,1 +1,32 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #fff4f0;
+  font-family: 'Press Start 2P', cursive !important;
+  image-rendering: pixelated;
+}
+
+.pixel-logo {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+}
+
+.card {
+  background-color: #ffe9e1;
+  border: 3px dashed #ffb49a;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 4px 4px #ffa07a;
+}
+
+.cute-btn {
+  background-color: #ffb49a;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.cute-btn:hover {
+  background-color: #ffa07a;
+}

@@ -1,0 +1,22 @@
+.form-label {
+    line-height: 2;
+}
+
+/* Apply padding to all text elements */
+h1,
+h2,
+h3,
+p,
+label,
+button,
+input {
+    padding: 1rem;
+    /* Adjust as needed */
+}
+
+textarea.form-control {
+    height: auto;
+    /* Adjust height to fit content */
+    resize: none;
+    /* Prevent resizing by the user */
+}
