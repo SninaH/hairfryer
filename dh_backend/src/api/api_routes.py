@@ -12,6 +12,7 @@ from src.api.pydantic_schemas import UploadYouTubeRequest, UploadYouTubeResponse
 from src.database.database import get_db
 from src.database.models.game_session import GameSession
 from src.utils import get_query_param_value
+from src.video_utils.get_numbers_frames import get_data_from_frames, get_data
 from src.video_utils.save_youtube_video import save_youtube_video, video_to_images
 
 api_router = APIRouter()
@@ -81,8 +82,35 @@ async def submit_coordinates(body: SubmitCoordinatesRequest, db: AsyncSession = 
     game_session.coordinates_pin_9 = body.coordinates.pins["pin_9"].model_dump()
 
     # todo: poženi async task
+    coordinates = [
+        [*game_session.coordinates_throw_order, "int"],
+        [*game_session.coordinates_pins_fallen_in_throw, "int"],
+        [*game_session.coordinates_pins_fallen_on_lane, "int"],
+        [*game_session.coordinates_pin_1, "bool"],
+        [*game_session.coordinates_pin_2, "bool"],
+        [*game_session.coordinates_pin_3, "bool"],
+        [*game_session.coordinates_pin_4, "bool"],
+        [*game_session.coordinates_pin_5, "bool"],
+        [*game_session.coordinates_pin_6, "bool"],
+        [*game_session.coordinates_pin_7, "bool"],
+        [*game_session.coordinates_pin_8, "bool"],
+        [*game_session.coordinates_pin_9, "bool"]
+    ]
 
-    game_session.status = "processing"
+    video_id = get_query_param_value(game_session.youtube_url, 'v')
+
+    total_throws, total_pins_fallen, throws = get_data('/data/images/', video_id, coordinates)
+    game_session.total_throws = total_throws
+    game_session.total_pins_fallen = total_pins_fallen
+    game_session.throws = throws
+
+    # game_session.total_throws
+    # game_session.total_pins_fallen
+    # game_session.throws
+
+
+    # game_session.status = "processing"
+    game_session.status = "done"
     await db.commit()
 
     response = SubmitCoordinatesResponse(
