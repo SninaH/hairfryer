@@ -1,0 +1,10 @@
+matplotlib
+glob
+pandas
+numpy
+mediapipe
+opencv-python
+timm
+torch
+torchvision
+pytube
