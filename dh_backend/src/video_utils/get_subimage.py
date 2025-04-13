@@ -17,6 +17,12 @@ def get_subimage(image, x, y, w, h):
     Returns:
         numpy.ndarray: The extracted sub-image.
     """
+
+    # Ensure x, y, w, h are integers
+    x = int(x)
+    y = int(y)
+    w = int(w)
+    h = int(h)
     # return image[y:(y+h), x:(x+w)]
     img = cv2.imread(image)
     #img dim

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment.development';
 import { Rectangles } from '../classes/rectangles';
 
@@ -22,18 +23,18 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   sendVideoLink(videoLink: string): Observable<any> {
-    const payload = { videoLink };
-    // return this.http.post(this.apiUrl + "upload-youtube", payload);
-
-    //return test data just to check if the function is called properly
-    return new Observable((observer) => {
-      this.responseData = {
-        session_id: "xyz789",
-        preview_image_url: "images/test_image.jpg"
-      };
-      observer.next("success");
-      observer.complete();
-    });
+    const payload = { "youtube_url": videoLink };
+    console.log("Payload sent to backend:", payload);
+  
+    return this.http.post(this.apiUrl + "/upload-youtube", payload).pipe(
+      tap((response) => {
+        console.log("Response received from backend:", response);
+      }),
+      catchError((error) => {
+        console.error("Error occurred while sending video link:", error);
+        return throwError(() => new Error("Failed to send video link. Please check the backend."));
+      })
+    );
   }
 
   setResponseData(data: ResponseData): void {
@@ -75,12 +76,12 @@ request:
       session_id: this.responseData?.session_id,
       coordinates: rectangles
     };
-    // return this.http.post(`${this.apiUrl}/submit-coordinates`, payload);
+    return this.http.post(`${this.apiUrl}/submit-coordinates`, payload);
     //return test data just to check if the function is called properly
-    return new Observable((observer) => {
-      console.log("Payload sent to backend:", payload);
-      observer.next("success");
-      observer.complete();
-    });
+    // return new Observable((observer) => {
+    //   console.log("Payload sent to backend:", payload);
+    //   observer.next("success");
+    //   observer.complete();
+    // });
   }
 }

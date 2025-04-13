@@ -18,28 +18,29 @@ export class MainPageComponent {
   ) {}
 
   onSubmit(): void {
-    // check first if the link is a valid youtube link
     const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
     if (!youtubeRegex.test(this.videoLink)) {
       alert("Please enter a valid YouTube link.");
       return;
     }
-    // send the link to the backend
+  
     this.apiService.sendVideoLink(this.videoLink).subscribe({
       next: (response) => {
-        console.log('Response from backend:', response);
-        // response format: "success"
-        if(response == "success") {
+        console.log("Response from backend:", response);
+  
+        // Check if the response contains the expected data
+        if (response && response.session_id && response.preview_image_url) {
           console.log("Video link sent successfully");
+          this.apiService.setResponseData(response); // Save the response data for later use
           this.router.navigate(['/annotate']);
         } else {
-          console.error("Error sending video link");
-          alert("Error sending video link :(");
+          console.error("Unexpected response format:", response);
+          alert("Unexpected response from the server. Please try again.");
         }
-        
       },
       error: (error) => {
-        console.error('Error occurred:', error);
+        console.error("Error occurred while sending video link:", error);
+        alert("An error occurred while sending the video link. Please check the console for details.");
       }
     });
   }

@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+
 # C extensions
 *.so
 
@@ -175,3 +177,5 @@ cython_debug/
 
 data/images/*
 data/videos/*
+
+postgres_app_data/*

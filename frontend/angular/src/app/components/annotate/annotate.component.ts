@@ -183,7 +183,16 @@ export class AnnotateComponent {
   constructor(
     private apiService: ApiService,
     private router: Router,
-  ) { }
+  ) {
+    this.imageUrl = this.apiService.getResponseData()?.preview_image_url || 'images/test_image.jpg';
+    console.log('Image URL:', this.imageUrl);
+    // Log the dimensions of the image
+    const img = new Image();
+    img.src = this.imageUrl;
+    img.onload = () => {
+      console.log(`Image Dimensions: ${img.width}px x ${img.height}px`);
+    };
+  }
 
   goBack(): void {
     this.router.navigate(['/']);

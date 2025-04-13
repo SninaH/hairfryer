@@ -13,7 +13,7 @@ async def save_youtube_video(url, output_path):
             print(f"Downloading video {url}...")
             subprocess.run(["yt-dlp", url, "-P", output_path, "-o", "%(id)s.mkv",
                             "--merge-output-format", "mkv", "--no-post-overwrites",
-                            "--no-continue", "--no-check-certificate"])
+                            "--no-continue", "--no-check-certificate", "-f bestvideo"])
             # Download the video using yt-dlp
             with open(output_path + "downloaded_videos.txt", "a", encoding="utf-8") as file:
                 file.write(url + "\n")

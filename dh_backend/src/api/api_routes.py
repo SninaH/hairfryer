@@ -23,7 +23,7 @@ async def hello():
     return {"message": "Hello World"}
 
 
-@api_router.post("upload-youtube", response_model=UploadYouTubeResponse)
+@api_router.post("/upload-youtube", response_model=UploadYouTubeResponse)
 async def upload_youtube(body: UploadYouTubeRequest, db: AsyncSession = Depends(get_db)):
     session_id = str(uuid.uuid4())
 
