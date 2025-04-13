@@ -17,6 +17,7 @@ services:
     volumes:
       - ./dh_backend/src:/app/src
       - ./data:/data
+      - ./tessdata:/usr/share/tesseract-ocr/5/tessdata/
     ports:
       - "8000:8000"
     environment:

@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def get_subimage(image, x, y, w, h):
+def get_subimage(image_path, x, y, w, h):
     """
     Extract a sub-image from the given image.
 
@@ -17,13 +17,17 @@ def get_subimage(image, x, y, w, h):
     Returns:
         numpy.ndarray: The extracted sub-image.
     """
+    x,y,w,h = int(x), int(y), int(w), int(h)
     # return image[y:(y+h), x:(x+w)]
-    img = cv2.imread(image)
+    img = cv2.imread(image_path)
     #img dim
-    print(img.shape)
-    print("TUKI", "x", x, "y", y, "w", w, "h", h)
+    # print(image_path)
+    # print(img.shape)
+    # print("TUKI2", "x", x, "y", y, "w", w, "h", h)
     sub_img = img[y:(y+h), x:(x+w)]
     # cv2.imwrite('subimage.png', sub_img)
+    assert sub_img.shape[0] == h, f"Sub-image height {sub_img.shape[0]} does not match expected height {h}"
+    assert sub_img.shape[1] == w, f"Sub-image width {sub_img.shape[1]} does not match expected width {w}"
     return sub_img
 
 if __name__ == "__main__":

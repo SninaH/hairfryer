@@ -26,6 +26,7 @@ from src.video_utils.get_subimage import get_subimage
 def get_text(img):
     # img = cv2.imread(filename)
     #resize the image to 32x32
+    # print("img.shape", img.shape)
     d = 64
     img = cv2.resize(img, (d,d))
     
@@ -51,8 +52,8 @@ def get_text(img):
     # txt = image_to_string(thresh, tessedit_char_whitelist="0123456789")
     return txt
 
-def get_number(img_path):
-    text = get_text(img_path).replace('\f', '')
+def get_number(img):
+    text = get_text(img).replace('\f', '')
     text = ''.join([c for c in text if c.isdigit()])
     return int(text) if len(text) > 0 else None
 
@@ -69,7 +70,7 @@ def light_type(subimage, brightness_threshold=0.9):
     
     
     normalized_brightness = mean_brightness / 255.0
-    print("normalized_brightness", normalized_brightness)
+    # print("normalized_brightness", normalized_brightness)
     return int(normalized_brightness >= brightness_threshold)
 
 if __name__ == "__main__":
