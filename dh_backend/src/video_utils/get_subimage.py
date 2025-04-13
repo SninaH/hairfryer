@@ -19,6 +19,9 @@ def get_subimage(image, x, y, w, h):
     """
     # return image[y:(y+h), x:(x+w)]
     img = cv2.imread(image)
+    #img dim
+    print(img.shape)
+    print("TUKI", "x", x, "y", y, "w", w, "h", h)
     sub_img = img[y:(y+h), x:(x+w)]
     # cv2.imwrite('subimage.png', sub_img)
     return sub_img

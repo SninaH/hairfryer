@@ -99,7 +99,7 @@ async def submit_coordinates(body: SubmitCoordinatesRequest, db: AsyncSession = 
 
     video_id = get_query_param_value(game_session.youtube_url, 'v')
 
-    total_throws, total_pins_fallen, throws = get_data('/data/images/', video_id, coordinates)
+    total_throws, total_pins_fallen, throws = await get_data('/data/images/', video_id, coordinates)
     game_session.total_throws = total_throws
     game_session.total_pins_fallen = total_pins_fallen
     game_session.throws = throws
