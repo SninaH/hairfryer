@@ -81,16 +81,16 @@ request:
       session_id: this.responseData?.session_id,
       coordinates: rectangles
     };
-    // return this.http.post(`${this.apiUrl}/submit-coordinates`, payload);
+    return this.http.post(`${this.apiUrl}/submit-coordinates`, payload);
     // return test data just to check if the function is called properly
-    return new Observable((observer) => {
-      console.log("Payload sent to backend:", payload);
-      observer.next({
-        "status": "coordinates_received",
-        "message": "Coordinates successfully received, processing will continue."
-      });
-      observer.complete();
-    });
+    // return new Observable((observer) => {
+    //   console.log("Payload sent to backend:", payload);
+    //   observer.next({
+    //     "status": "coordinates_received",
+    //     "message": "Coordinates successfully received, processing will continue."
+    //   });
+    //   observer.complete();
+    // });
   }
 
   /*
@@ -101,8 +101,7 @@ response ČE ŠE NI:
 }
 response ČE ŽE JE:
 {
-  "status": "done",
-  "results": {
+  {
     "total_throws": 10,
     "total_pins_fallen": 85,
     "throws":[
@@ -122,52 +121,32 @@ response ČE ŽE JE:
   }
 }
   */
-  getReport(): Observable<ReportResponse> {
-    const sessionId = this.responseData?.session_id;
-    if (!sessionId) {
-      throw new Error('Session ID is not set. Please send the video link first.');
-    }
-    console.log("Fetching report for session ID:", sessionId);
-
-    // return this.http.get<ReportResponse>(`${this.apiUrl}/status/${sessionId}`).pipe(
-    //   tap((response: ReportResponse) => {
-    //     console.log("Response received from backend:", response);
-
-    //     // Check if the response indicates processing or done
-    //     if (response.status === "processing") {
-    //       console.log("Report is still processing.");
-    //     } else if (response.status === "done") {
-    //       console.log("Report is complete. Saving results.");
-    //       // Save the report to this.report
-    //       this.report = response;
-    //     } else {
-    //       console.warn("Unexpected status received:", response.status);
-    //     }
-    //   }),
-    //   catchError((error) => {
-    //     console.error("Error occurred while fetching report:", error);
-    //     return throwError(() => new Error("Failed to fetch report. Please check the backend."));
-    //   })
-    // );
-    // return test data just to check if the function is called properly
-    return new Observable((observer) => {
-      console.log("Fetching report for session ID:", sessionId);
-      const testResponse = {
-        status: "done",
-        results: {
-          total_throws: 10,
-          total_pins_fallen: 85,
-          throws: [
-            { pins_fallen: 5, pins_hit: [0, 1, 0, 0, 1, 0, 0, 0, 1] },
-            { pins_fallen: 3, pins_hit: [0, 1, 0, 0, 1, 0, 0, 0, 1] },
-            { pins_fallen: 4, pins_hit: [0, 1, 0, 0, 1, 0, 0, 0, 1] },
-          ]
-        }
-      };
-      observer.next(testResponse);
-      observer.complete();
-    });
+getReport(): Observable<ReportResponse> {
+  const sessionId = this.responseData?.session_id;
+  if (!sessionId) {
+    throw new Error('Session ID is not set. Please send the video link first.');
   }
+  console.log("Fetching report for session ID:", sessionId);
+
+  return this.http.get<ReportResponse>(`${this.apiUrl}/status/${sessionId}`).pipe(
+    tap((response: ReportResponse) => {
+      console.log("Response received from backend:", response);
+
+      // Check if the response contains the fields indicating the report is done
+      if ('total_throws' in response && 'total_pins_fallen' in response) {
+        console.log("Report is complete. Saving results.");
+        // Save the report to this.report
+        this.report = response;
+      } else {
+        console.log("Report is still processing.");
+      }
+    }),
+    catchError((error) => {
+      console.error("Error occurred while fetching report:", error);
+      return throwError(() => new Error("Failed to fetch report. Please check the backend."));
+    })
+  );
+}
 
   getReportData(): { status: string, results: any } | null {
     return this.report;
@@ -183,7 +162,7 @@ response ČE ŽE JE:
     // return test data just to check if the function is called properly
     return new Observable((observer) => {
       const testResponse = {
-        videoUrl: "/images/output_h264.mp4" // URL of the video to be displayed
+        videoUrl: "/images/output_all_h264.mp4" // URL of the video to be displayed
       };
       observer.next(testResponse);
       observer.complete();

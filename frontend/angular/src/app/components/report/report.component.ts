@@ -42,32 +42,28 @@ export class ReportComponent {
 
 
   gottenReport: any = null; // Property to hold the report data
+  loading: boolean = true; // Property to track loading state
 
   // call apiService to get report every 2 seconds until status is done
+  // Call the API to get the report
   getReport() {
-    const sessionId = this.apiService.getSessionId();
-    if (!sessionId) {
-      console.error('Session ID is not set. Please send the video link first.');
-      return;
-    }
-    console.log("Fetching report for session ID:", sessionId);
-
     this.apiService.getReport().subscribe({
       next: (response) => {
         console.log("Response from backend:", response);
-        // Check if the response indicates processing or done
-        if (response.status === "processing") {
-          console.log("Report is still processing.");
-        } else if (response.status === "done") {
+
+        // Check if the response contains the fields indicating the report is done
+        if ('total_throws' in response && 'total_pins_fallen' in response) {
           console.log("Report is complete. Saving results.");
-          // Save the report to this.gottenReport
-          this.gottenReport = response.results;
+          this.gottenReport = response; // Save the report data
+          this.loading = false; // Stop loading
         } else {
-          console.warn("Unexpected status received:", response.status);
+          console.log("Report is still processing.");
         }
       },
       error: (error) => {
         console.error("Error occurred while fetching report:", error);
+        this.loading = false; // Stop loading in case of error
+        alert("Failed to fetch the report. Please try again later.");
       }
     });
   }

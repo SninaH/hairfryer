@@ -20,6 +20,7 @@ export class AnnotateComponent {
   objectsToAnnotate: string[] = ['throw order', 'pins fallen in throw', 'pins fallen on lane', 'pin 1', 'pin 2', 'pin 3', 'pin 4', 'pin 5', 'pin 6', 'pin 7', 'pin 8', 'pin 9']; // Predefined list of objects
   objectsToAnnotateLabels: string[] = ['Order', 'Throw', 'Lane', 'Pin 1', 'Pin 2', 'Pin 3', 'Pin 4', 'Pin 5', 'Pin 6', 'Pin 7', 'Pin 8', 'Pin 9']; // Labels for the objects
   currentObjectIndex: number = 0;
+  loading: boolean = false; // Property to track loading state
 
   annotations = [
     {
@@ -271,15 +272,18 @@ export class AnnotateComponent {
       }
     }
 
+    this.loading = true; // Start loading
     this.apiService.submitCoordinates(rectangles).subscribe({
       next: (response) => {
         console.log('Response from backend:', response);
         console.log("Annotations sent successfully!");
+        this.loading = false; // Stop loading
         // go to reports component
         this.router.navigate(['/report']);
       },
       error: (error) => {
         console.error('Error occurred:', error);
+        this.loading = false; // Stop loading
         alert("Error sending annotations :(");
       }
     });

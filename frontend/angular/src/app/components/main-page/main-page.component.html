@@ -9,7 +9,11 @@
                 <label for="videoInput" class="form-label">Insert the link to the YouTube video</label>
                 <textarea class="form-control w-100" id="videoLinkInput" placeholder="YouTube video link" [(ngModel)]="videoLink" name="videoLink"></textarea>
             </div>
-            <button type="submit" class="cute-btn w-100">🎳 Calculate Scores</button>
+            <button type="submit" class="cute-btn w-100" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="!loading">🎳 Calculate Scores</span>
+                <span *ngIf="loading">Calculating...</span>
+            </button>
         </form>
     </div>
 </div>

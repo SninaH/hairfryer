@@ -3,7 +3,11 @@
     <p>Ctrl + scroll to zoom in or out</p>
     <p>Ctrl + click to pan</p>
 
-    <button class="btn btn-secondary mt-3" (click)="sendAnnotations()">Done</button>
+    <button class="cute-btn w-100" (click)="sendAnnotations()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        <span *ngIf="!loading">Done</span>
+        <span *ngIf="loading">Submitting...</span>
+      </button>
 
     <annotator #annotator [naturalSize]="true" [imageUrl]="imageUrl" [shapes]="annotations"
         [shortcut]="{ del: true, bksp: true }" (onReady)="annotator.drawRectangle()"
