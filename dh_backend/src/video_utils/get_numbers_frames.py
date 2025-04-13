@@ -60,6 +60,8 @@ def merge_data_from_frames(values):
     cumulative_sum = 0
     ciscenje_stojijo = None
     prev_met = -1
+
+    current_met = 0
     for i in range(1, len(values)):
         # met, _, _ = values[i]
         met = values[i][0]
@@ -68,7 +70,8 @@ def merge_data_from_frames(values):
             ciscenje_stojijo = 9
 
         if met > 0:
-            if prev_met != met:
+            if met == current_met +1:
+                current_met += 1
                 print("NOV MET")
                 prev_podrti = cleaned_values[prev_met][1]
                 cumulative_sum += prev_podrti
@@ -79,6 +82,9 @@ def merge_data_from_frames(values):
 
             # met, podrti, skupaj = values[i]
             met = values[i][0]
+            # met = current_met
+            if met != current_met:
+                continue
             podrti = values[i][1]
             skupaj = values[i][2]
             lucke = values[i][3:]
@@ -92,10 +98,17 @@ def merge_data_from_frames(values):
 
             # if cumulative_sum + podrti == skupaj:
             if diff == podrti_lucke or podrti == podrti_lucke:
-                cleaned_values[met] = [met, podrti_lucke, skupaj, *lucke]
+                cleaned_values[met] = [met, podrti_lucke, cumulative_sum + podrti_lucke, *lucke]
                 print("OK")
             elif diff == podrti and (met not in cleaned_values):
-                cleaned_values[met] = [met, podrti, skupaj, None]
+                if diff == 9:
+                    cleaned_values[met] = [met, podrti, skupaj, 1,1,1,1,1,1,1,1,1]
+                elif diff == 8:
+                    cleaned_values[met] = [met, podrti, skupaj, 1, 1, 1, 1, 0, 1, 1, 1, 1]
+                elif diff == 7:
+                    cleaned_values[met] = [met, podrti, skupaj, 1, 1, 1, 0, 0, 1, 1, 1, 1]
+                else:
+                    cleaned_values[met] = [met, podrti, skupaj, None]
                 print(lucke)
                 print("OK None")
 
@@ -103,7 +116,8 @@ def merge_data_from_frames(values):
                 print("!=")
                 print("diff: ", diff)
                 print("podrti: ", podrti)
-                print("podrti_lucke:", podrti_lucke)
+                print("podrti_lucke:", podrti_lucke, flush=True)
+        print(flush=True)
 
         prev_met = met
     return cleaned_values
@@ -114,7 +128,6 @@ def get_data_from_frames(path, fields):
     values = []
     frames = [f for f in listdir(path) if isfile(join(path, f))]
     frames.sort()
-    print(frames)
     for frame in frames:
         frame_path = path + frame
         print("Frame: ", frame, frame_path)
@@ -137,10 +150,14 @@ def get_data_from_frames(path, fields):
 
 async def get_data(input_path, video_name, fields):
     values = get_data_from_frames(input_path + video_name + "/", fields)
+    print("values",values)
     cleaned_data = merge_data_from_frames(values)
+    print("cleaned data:")
+    for met, values in cleaned_data.items():
+        print(f"{met}: {values}")
 
     total_throws = len(cleaned_data) - 1
-    total_pins_fallen = cleaned_data[10][2]
+    total_pins_fallen = cleaned_data[total_throws][2]
     throws = []
     for met in cleaned_data:
         if met == 0:

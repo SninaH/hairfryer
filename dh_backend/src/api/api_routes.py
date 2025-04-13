@@ -37,7 +37,7 @@ async def upload_youtube(body: UploadYouTubeRequest, db: AsyncSession = Depends(
     if not existing_session:
         await asyncio.create_task(save_youtube_video(video_url, "/data/videos/"))
 
-    await video_to_images(video_id, "mkv", "/data/videos/", "/data/images/", every_n_seconds=10, for_frontend=True)
+    await video_to_images(video_id, "mkv", "/data/videos/", "/data/images/")
 
     preview_image_url = f"http://localhost:8000/images/{video_id}/frame0.jpg"
 
@@ -64,8 +64,8 @@ async def submit_coordinates(body: SubmitCoordinatesRequest, db: AsyncSession = 
     if not game_session:
         raise HTTPException(status_code=404, detail="Session not found.")
 
-    if game_session.status != "waiting-coordinates":
-        raise HTTPException(status_code=400, detail="Session is not in a state to receive coordinates.")
+    # if game_session.status != "waiting-coordinates":
+    #     raise HTTPException(status_code=400, detail="Session is not in a state to receive coordinates.")
 
     game_session.coordinates_throw_order = body.coordinates.throw_order.model_dump()
     game_session.coordinates_pins_fallen_in_throw = body.coordinates.pins_fallen_in_throw.model_dump()
@@ -98,8 +98,9 @@ async def submit_coordinates(body: SubmitCoordinatesRequest, db: AsyncSession = 
     ]
 
     video_id = get_query_param_value(game_session.youtube_url, 'v')
-
+    print("TUKIa")
     total_throws, total_pins_fallen, throws = await get_data('/data/images/', video_id, coordinates)
+    print("TUKIb")
     game_session.total_throws = total_throws
     game_session.total_pins_fallen = total_pins_fallen
     game_session.throws = throws

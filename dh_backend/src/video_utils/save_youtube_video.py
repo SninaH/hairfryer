@@ -12,6 +12,7 @@ async def save_youtube_video(url, output_path):
         else:
             print(f"Downloading video {url}...")
             subprocess.run(["yt-dlp", url, "-P", output_path, "-o", "%(id)s.mkv",
+                            "-f bestvideo",
                             "--merge-output-format", "mkv", "--no-post-overwrites",
                             "--no-continue", "--no-check-certificate", "-f bestvideo"])
             # Download the video using yt-dlp
@@ -21,7 +22,7 @@ async def save_youtube_video(url, output_path):
 
 
 
-async def video_to_images(video_name, video_format, input_path, output_path, every_n_seconds=10, for_frontend = False):
+async def video_to_images(video_name, video_format, input_path, output_path, every_n_seconds=5, for_frontend = False):
     vidcap = cv2.VideoCapture(f'{input_path}{video_name}.{video_format}')
     count = 0
     success = True
@@ -30,13 +31,16 @@ async def video_to_images(video_name, video_format, input_path, output_path, eve
     while success:
         success, image = vidcap.read()
         if count % (every_n_seconds * fps) == 0:
-            path = output_path + video_name + '/frame%d.jpg' % count
+            path = output_path + video_name + f'/frame{count:06d}.jpg'
             print(path)
             # check if the directory exists
             if not os.path.exists(output_path + video_name):
                 os.makedirs(output_path + video_name)
                 print(f"Directory {output_path + video_name} created")
-            cv2.imwrite(path, image)
+            try:
+                cv2.imwrite(path, image)
+            except Exception as e:
+                pass
             if for_frontend:
                 break
             # print('successfully written 10th frame')
