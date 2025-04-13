@@ -1,0 +1,20 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-center">Coach</h2>
+        <!-- Switch button to navigate to Report -->
+        <button class="switch-btn" (click)="navigateToReport()">Switch to Report</button>
+    </div>
+
+    <!-- Display the video -->
+    <div class="mt-4" *ngIf="videoUrl; else loading">
+        <video width="100%" controls>
+            <source [src]="videoUrl" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Loading message -->
+    <ng-template #loading>
+        <p>Loading video...</p>
+    </ng-template>
+</div>

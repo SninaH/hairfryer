@@ -1,0 +1,57 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-center">Report</h2>
+        <!-- Switch button to navigate to Coach -->
+        <button class="switch-btn" (click)="navigateToCoach()">Switch to Coach</button>
+    </div>
+
+    <!-- Show a loading spinner while the report is being processed -->
+    <div *ngIf="!gottenReport" class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p>Processing report, please wait...</p>
+    </div>
+
+    <!-- Display the report once it's ready -->
+    <div *ngIf="gottenReport" class="mt-4">
+        <h4>Total Throws: {{ gottenReport.total_throws }}</h4>
+        <h4>Total Pins Fallen: {{ gottenReport.total_pins_fallen }}</h4>
+
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Throw #</th>
+                    <th>Pins Fallen</th>
+                    <th class="text-center">Pins Hit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let throwData of gottenReport.throws; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ throwData.pins_fallen }}</td>
+                    <td>
+                        <!-- Display pins_hit in a diamond shape -->
+                        <div class="pins-diamond">
+                            <div class="diamond-row">{{ throwData.pins_hit[0] }}</div>
+                            <div class="diamond-row">
+                                <span class="pin">{{ throwData.pins_hit[1] }}</span>
+                                <span class="pin">{{ throwData.pins_hit[2] }}</span>
+                            </div>
+                            <div class="diamond-row">
+                                <span class="pin">{{ throwData.pins_hit[3] }}</span>
+                                <span class="pin">{{ throwData.pins_hit[4] }}</span>
+                                <span class="pin">{{ throwData.pins_hit[5] }}</span>
+                            </div>
+                            <div class="diamond-row">
+                                <span class="pin">{{ throwData.pins_hit[6] }}</span>
+                                <span class="pin">{{ throwData.pins_hit[7] }}</span>
+                            </div>
+                            <div class="diamond-row">{{ throwData.pins_hit[8] }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

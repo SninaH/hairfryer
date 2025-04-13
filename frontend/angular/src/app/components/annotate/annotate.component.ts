@@ -25,23 +25,23 @@ export class AnnotateComponent {
     {
       id: 1,
       points: [
-        [70, 144], // Top-left corner
-        [70, 164], // Bottom-left corner
-        [93, 164], // Bottom-right corner
-        [93, 144], // Top-right corner
+        [729, 144], // Top-left corner
+        [729, 167], // Bottom-left corner
+        [756, 167], // Bottom-right corner
+        [756, 144], // Top-right corner
       ],
-      phi: 0, // Rotation angle
-      categories: ['Order'], // Category for the annotation
-      type: 'rectangle', // Shape type
-      color: 'rgba(255, 0, 0, 0.2)', // Annotation color with transparency
+      phi: 0,
+      categories: ['Order'],
+      type: 'rectangle',
+      color: 'rgba(255, 0, 0, 0.2)',
     },
     {
       id: 2,
       points: [
-        [144, 144],
-        [144, 164],
-        [157, 164],
-        [157, 144],
+        [805, 145],
+        [805, 167],
+        [824, 167],
+        [824, 145],
       ],
       phi: 0,
       categories: ['Throw'],
@@ -51,10 +51,10 @@ export class AnnotateComponent {
     {
       id: 3,
       points: [
-        [221, 144],
-        [221, 164],
-        [234, 164],
-        [234, 144],
+        [857, 145],
+        [857, 167],
+        [900, 167],
+        [900, 145],
       ],
       phi: 0,
       categories: ['Lane'],
@@ -64,10 +64,10 @@ export class AnnotateComponent {
     {
       id: 4,
       points: [
-        [144, 43],
-        [144, 53],
-        [155, 53],
-        [155, 43],
+        [812, 44],
+        [812, 54],
+        [822, 54],
+        [822, 44],
       ],
       phi: 0,
       categories: ['Pin 1'],
@@ -77,10 +77,10 @@ export class AnnotateComponent {
     {
       id: 5,
       points: [
-        [108, 62],
-        [108, 71],
-        [119, 71],
-        [119, 62],
+        [775, 63],
+        [775, 73],
+        [785, 73],
+        [785, 63],
       ],
       phi: 0,
       categories: ['Pin 2'],
@@ -90,10 +90,10 @@ export class AnnotateComponent {
     {
       id: 6,
       points: [
-        [181, 60],
-        [181, 72],
-        [192, 72],
-        [192, 60],
+        [848, 64],
+        [848, 74],
+        [858, 74],
+        [858, 64],
       ],
       phi: 0,
       categories: ['Pin 3'],
@@ -103,10 +103,10 @@ export class AnnotateComponent {
     {
       id: 7,
       points: [
-        [73, 80],
-        [73, 90],
-        [84, 90],
-        [84, 80],
+        [737, 81],
+        [737, 91],
+        [747, 91],
+        [747, 81],
       ],
       phi: 0,
       categories: ['Pin 4'],
@@ -116,10 +116,10 @@ export class AnnotateComponent {
     {
       id: 8,
       points: [
-        [145, 80],
-        [145, 90],
-        [155, 90],
-        [155, 80],
+        [812, 83],
+        [812, 93],
+        [822, 93],
+        [822, 83],
       ],
       phi: 0,
       categories: ['Pin 5'],
@@ -129,10 +129,10 @@ export class AnnotateComponent {
     {
       id: 9,
       points: [
-        [217, 79],
-        [217, 90],
-        [229, 90],
-        [229, 79],
+        [886, 83],
+        [886, 93],
+        [896, 93],
+        [896, 83],
       ],
       phi: 0,
       categories: ['Pin 6'],
@@ -142,10 +142,10 @@ export class AnnotateComponent {
     {
       id: 10,
       points: [
-        [108, 98],
-        [108, 108],
-        [119, 108],
-        [119, 98],
+        [774, 100],
+        [774, 110],
+        [784, 110],
+        [784, 100],
       ],
       phi: 0,
       categories: ['Pin 7'],
@@ -155,10 +155,10 @@ export class AnnotateComponent {
     {
       id: 11,
       points: [
-        [181, 98],
-        [181, 108],
-        [192, 108],
-        [192, 98],
+        [850, 103],
+        [850, 113],
+        [860, 113],
+        [860, 103],
       ],
       phi: 0,
       categories: ['Pin 8'],
@@ -168,10 +168,10 @@ export class AnnotateComponent {
     {
       id: 12,
       points: [
-        [145, 117],
-        [145, 127],
-        [156, 127],
-        [156, 117],
+        [811, 120],
+        [811, 130],
+        [821, 130],
+        [821, 120],
       ],
       phi: 0,
       categories: ['Pin 9'],
@@ -274,7 +274,9 @@ export class AnnotateComponent {
     this.apiService.submitCoordinates(rectangles).subscribe({
       next: (response) => {
         console.log('Response from backend:', response);
-        alert("Annotations sent successfully!");
+        console.log("Annotations sent successfully!");
+        // go to reports component
+        this.router.navigate(['/report']);
       },
       error: (error) => {
         console.error('Error occurred:', error);

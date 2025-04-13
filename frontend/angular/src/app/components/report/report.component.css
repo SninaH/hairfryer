@@ -1,0 +1,32 @@
+.pins-diamond {
+    text-align: left;
+}
+
+.pins-diamond .diamond-row {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+    /* Add spacing between rows */
+}
+
+.pins-diamond .pin {
+    margin: 0 10px;
+    /* Add spacing between pins */
+}
+
+.switch-btn {
+    background-color: #ffb49a; /* Match the cute button background */
+    border: 3px dashed #ffb49a; /* Dashed border for a playful look */
+    color: white;
+    border-radius: 20px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for a comfortable size */
+    box-shadow: 4px 4px #ffa07a; /* Add a shadow for depth */
+    font-family: 'Press Start 2P', cursive; /* Match the font */
+    text-transform: uppercase; /* Make the text uppercase for consistency */
+  }
+  
+  .switch-btn:hover {
+    background-color: #ffa07a; /* Slightly darker hover effect */
+    box-shadow: 6px 6px #ff8c69; /* Enhance the shadow on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
